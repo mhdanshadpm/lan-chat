@@ -1,0 +1,19 @@
+[package]
+name = "lanchat-platform"
+description = "OS-specific window, tray, hotkey, notification and autostart services for LAN Chat"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-notification = "2"
+tauri-plugin-autostart = "2"
+tauri-plugin-global-shortcut = "2"
+raw-window-handle = "0.6"
+thiserror.workspace = true
+serde.workspace = true
+
+[build-dependencies]
+cc = "1"

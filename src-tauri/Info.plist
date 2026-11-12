@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>LAN Chat finds other people on your Wi-Fi or wired network so you can chat without a server or internet connection. No data leaves the local network.</string>
+  <key>NSBonjourServices</key>
+  <array>
+    <string>_lanchat._tcp</string>
+  </array>
+  <key>LSApplicationCategoryType</key>
+  <string>public.app-category.social-networking</string>
+  <key>NSHumanReadableCopyright</key>
+  <string>MIT licensed</string>
+</dict>
+</plist>
