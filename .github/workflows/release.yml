@@ -52,13 +52,7 @@ jobs:
       # Only exports Apple credentials when all of them are configured, so
       # unsigned builds do not try to use empty signing values.
       - name: Configure macOS signing
-        if: >-
-          matrix.os == 'macos-latest' &&
-          secrets.APPLE_CERTIFICATE != '' &&
-          secrets.APPLE_SIGNING_IDENTITY != '' &&
-          secrets.APPLE_ID != '' &&
-          secrets.APPLE_PASSWORD != '' &&
-          secrets.APPLE_TEAM_ID != ''
+        if: matrix.os == 'macos-latest'
         shell: bash
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
@@ -68,14 +62,20 @@ jobs:
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          {
-            echo "APPLE_CERTIFICATE=$APPLE_CERTIFICATE"
-            echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
-            echo "APPLE_SIGNING_IDENTITY=$APPLE_SIGNING_IDENTITY"
-            echo "APPLE_ID=$APPLE_ID"
-            echo "APPLE_PASSWORD=$APPLE_PASSWORD"
-            echo "APPLE_TEAM_ID=$APPLE_TEAM_ID"
-          } >> "$GITHUB_ENV"
+          if [ -n "$APPLE_CERTIFICATE" ] && [ -n "$APPLE_SIGNING_IDENTITY" ] \
+            && [ -n "$APPLE_ID" ] && [ -n "$APPLE_PASSWORD" ] && [ -n "$APPLE_TEAM_ID" ]; then
+            {
+              echo "APPLE_CERTIFICATE=$APPLE_CERTIFICATE"
+              echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
+              echo "APPLE_SIGNING_IDENTITY=$APPLE_SIGNING_IDENTITY"
+              echo "APPLE_ID=$APPLE_ID"
+              echo "APPLE_PASSWORD=$APPLE_PASSWORD"
+              echo "APPLE_TEAM_ID=$APPLE_TEAM_ID"
+            } >> "$GITHUB_ENV"
+            echo "Apple signing and notarization enabled." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Apple signing secrets are incomplete; building an unsigned DMG." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Build bundles
         run: npm run tauri build -- ${{ matrix.args }}

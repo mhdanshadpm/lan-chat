@@ -911,5 +911,5 @@ protocol version 1.
 
 ## License
 
-MIT. See the `license` field in `Cargo.toml`; add a `LICENSE` file before
-publishing binaries if you need the full text bundled.
+MIT. See [LICENSE](LICENSE) for the full text and the `license` field in
+`Cargo.toml`.
