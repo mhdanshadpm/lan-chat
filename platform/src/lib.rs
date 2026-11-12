@@ -5,14 +5,18 @@
 //! The `core` crate is deliberately OS-agnostic; the Tauri app only calls
 //! through the [`PlatformServices`] trait.
 
+#[cfg(target_os = "android")]
 #[allow(dead_code)]
 mod android;
 mod desktop;
+#[cfg(target_os = "ios")]
 #[allow(dead_code)]
 mod ios;
+#[cfg(target_os = "linux")]
 mod linux;
+#[cfg(target_os = "macos")]
 mod macos;
-#[allow(dead_code)]
+#[cfg(target_os = "windows")]
 mod windows;
 
 use serde::{Deserialize, Serialize};
@@ -111,26 +115,22 @@ pub trait PlatformServices: Send + Sync {
 pub fn current() -> &'static dyn PlatformServices {
     #[cfg(target_os = "windows")]
     {
-        return &windows::WindowsPlatform;
+        &windows::WindowsPlatform
     }
     #[cfg(target_os = "macos")]
     {
-        return &macos::MacOsPlatform;
+        &macos::MacOsPlatform
     }
     #[cfg(target_os = "linux")]
     {
-        return &linux::LinuxPlatform;
+        &linux::LinuxPlatform
     }
     #[cfg(target_os = "android")]
     {
-        return &android::AndroidPlatform;
+        &android::AndroidPlatform
     }
     #[cfg(target_os = "ios")]
     {
-        return &ios::IosPlatform;
-    }
-    #[allow(unreachable_code)]
-    {
-        &linux::LinuxPlatform
+        &ios::IosPlatform
     }
 }
